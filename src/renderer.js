@@ -17,6 +17,37 @@ const headerName = document.getElementById('header-name');
 const themeBoxes = document.querySelectorAll('.theme-box');
 const canvasContainer = document.getElementById('canvas-container');
 
+// Update text sizes for welcome screen
+nameInput.style.fontSize = '2rem';
+nameInput.style.padding = '1.2rem';
+nameSubmit.style.fontSize = '2rem';
+nameSubmit.style.padding = '1.2rem 2.5rem';
+
+document.querySelector('.theme-section h2').style.fontSize = '2.5rem';
+themeSubmit.style.fontSize = '2rem';
+themeSubmit.style.padding = '1.2rem 2.5rem';
+
+// Theme images mapping
+const themeImages = {
+    'harry-potter': path.join(__dirname, '../assets/harry.jpg'),
+    'marvel': path.join(__dirname, '../assets/marvel.png'),
+    'mickey': path.join(__dirname, '../assets/mickey.jpg'),
+    'spiderman': path.join(__dirname, '../assets/spiderman.jpg'),
+    'tangled': path.join(__dirname, '../assets/tangled.jpg')
+};
+
+// Set theme preview images
+themeBoxes.forEach(box => {
+  const theme = box.dataset.theme;
+  const img = box.querySelector('img');
+  if (img && themeImages[theme]) {
+    img.src = themeImages[theme];
+    img.style.width = '100%';
+    img.style.height = '200px'; // Increased image size
+    img.style.objectFit = 'cover';
+  }
+});
+
 // Welcome screen logic
 nameSubmit.addEventListener('click', () => {
   const name = nameInput.value.trim();
@@ -45,38 +76,46 @@ themeSubmit.addEventListener('click', () => {
 });
 
 function initializeFileExplorer() {
-  // Update the header with personalized title
   const personalizedTitle = `${userName.toUpperCase()}'S PERSONAL PC`;
   headerName.textContent = personalizedTitle;
   
-  canvasContainer.classList.add(`theme-${selectedTheme}`);
+  // Update this section to properly set the background
+  document.body.style.backgroundImage = `url('${themeImages[selectedTheme]}')`;
+  document.body.style.backgroundSize = 'cover';
+  document.body.style.backgroundPosition = 'center';
+  document.body.style.backgroundRepeat = 'no-repeat';
+  document.body.style.height = '100vh';
+  document.body.style.margin = '0';
+  
+  // Add this to ensure the canvas container is transparent
+  canvasContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+  
   initializeSVG();
   addArrowMarker();
   initializeHomeButton();
   initializePanAndZoom();
   loadFolderTree(homePath, 0, initializeHomeButton(), 0);
 }
-
-
 const treeContainer = document.getElementById('tree-container');
-const svgContainer = document.getElementById('svg-container');
 const homePath = os.homedir();
 
 const folderState = {};
 let isPanning = false;
 let startX = 0;
 let startY = 0;
+let currentScale = 1;
+let lastDistance = 0;
 
 // Updated dimensions and spacing
-const INITIAL_VIEW_WIDTH = 16000;  // Increased for better overall view
-const INITIAL_VIEW_HEIGHT = 12000; // Increased for better overall view
-const NODE_WIDTH = 2400;           // Slightly wider for text
-const NODE_HEIGHT = 1000;          // Slightly taller for text
+const INITIAL_VIEW_WIDTH = 16000;
+const INITIAL_VIEW_HEIGHT = 12000;
+const NODE_WIDTH = 2400;
+const NODE_HEIGHT = 1000;
 const NODE_PADDING = 600;
-const HORIZONTAL_SPACING = 4000;    // Increased horizontal spacing
-const VERTICAL_SPACING = 2500;      // Increased vertical spacing
-const RADIAL_RADIUS = 8000;        // Adjusted for new spacing
-const SECOND_LAYER_OFFSET = 6000;   // Adjusted for new spacing
+const HORIZONTAL_SPACING = 4000;
+const VERTICAL_SPACING = 2500;
+const RADIAL_RADIUS = 8000;
+const SECOND_LAYER_OFFSET = 6000;
 
 let minX = Infinity;
 let maxX = -Infinity;
@@ -91,23 +130,20 @@ function initializeSVG() {
     treeContainer.setAttribute('height', '100%');
 }
 
-// Added function to fit text within node
 function fitTextInNode(text, maxWidth) {
-    const maxChars = Math.floor(maxWidth / 150); // Approximate characters that fit
+    const maxChars = Math.floor(maxWidth / 150);
     if (text.length <= maxChars) return text;
     
-    // If filename has extension, keep it in shortened form
     const parts = text.split('.');
     if (parts.length > 1) {
         const ext = parts.pop();
         const name = parts.join('.');
-        if (name.length > maxChars - 4) { // Account for "..." and extension
+        if (name.length > maxChars - 4) {
             return `${name.substring(0, maxChars - 4)}...${ext}`;
         }
         return text;
     }
     
-    // For folders or files without extension
     return text.substring(0, maxChars - 3) + '...';
 }
 
@@ -129,7 +165,6 @@ function drawNode(item, x, y, parentPath, depth) {
     button.style.strokeWidth = '4';
     button.style.cursor = 'pointer';
 
-    // Fit text within node
     const fittedText = fitTextInNode(item.name, NODE_WIDTH - NODE_PADDING);
     
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -140,7 +175,7 @@ function drawNode(item, x, y, parentPath, depth) {
     text.setAttribute('class', 'node-text');
     text.textContent = fittedText;
     text.style.fill = '#FFFFFF';
-    text.style.fontSize = '250px'; // Slightly smaller font for better fit
+    text.style.fontSize = '250px';
     text.style.fontWeight = 'bold';
     text.style.pointerEvents = 'none';
 
@@ -321,7 +356,7 @@ function initializePanAndZoom() {
       h: INITIAL_VIEW_HEIGHT 
   };
 
-  // Pan functionality remains the same
+  // Pan functionality
   treeContainer.addEventListener('mousedown', (e) => {
       if (e.button === 0) {
           isPanning = true;
@@ -351,13 +386,83 @@ function initializePanAndZoom() {
       treeContainer.style.cursor = 'grab';
   });
 
-  // Replace wheel zoom with two-finger scroll
+  // Pinch zoom functionality
+  treeContainer.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 2) {
+          e.preventDefault();
+          const touch1 = e.touches[0];
+          const touch2 = e.touches[1];
+          lastDistance = Math.hypot(
+              touch2.clientX - touch1.clientX,
+              touch2.clientY - touch1.clientY
+          );
+      }
+  }, { passive: false });
+
+  treeContainer.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 2) {
+          e.preventDefault();
+          const touch1 = e.touches[0];
+          const touch2 = e.touches[1];
+          const currentDistance = Math.hypot(
+              touch2.clientX - touch1.clientX,
+              touch2.clientY - touch1.clientY
+          );
+
+          if (lastDistance > 0) {
+              const delta = currentDistance - lastDistance;
+              const zoomFactor = 1 + delta * 0.01;
+
+              // Calculate center of pinch
+              const centerX = (touch1.clientX + touch2.clientX) / 2;
+              const centerY = (touch1.clientY + touch2.clientY) / 2;
+
+              // Convert center point to SVG coordinates
+              const svgPoint = treeContainer.createSVGPoint();
+              svgPoint.x = centerX;
+              svgPoint.y = centerY;
+              const transformedPoint = svgPoint.matrixTransform(treeContainer.getScreenCTM().inverse());
+
+              // Update viewBox
+              viewBox.w /= zoomFactor;
+              viewBox.h /= zoomFactor;
+              viewBox.x += (transformedPoint.x - viewBox.x) * (1 - 1/zoomFactor);
+              viewBox.y += (transformedPoint.y - viewBox.y) * (1 - 1/zoomFactor);
+
+              treeContainer.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+          }
+
+          lastDistance = currentDistance;
+      }
+  }, { passive: false });
+
+  treeContainer.addEventListener('touchend', () => {
+      lastDistance = 0;
+  });
+
+  // Mouse wheel zoom
   treeContainer.addEventListener('wheel', (e) => {
       e.preventDefault();
+      
+      if (e.ctrlKey) {
+          const zoomFactor = e.deltaY > 0 ? 1.1 : 0.9;
 
-      // Check if it's a two-finger gesture (trackpad)
-      if (e.ctrlKey || e.deltaMode === 0) {
-          const scrollSpeed = 1.5; // Adjust this value to control scroll speed
+          // Calculate mouse position in SVG coordinates
+          const svgPoint = treeContainer.createSVGPoint();
+          svgPoint.x = e.clientX;
+          svgPoint.y = e.clientY;
+          const transformedPoint = svgPoint.matrixTransform(treeContainer.getScreenCTM().inverse());
+
+          // Update viewBox
+          viewBox.w *= zoomFactor;
+          viewBox.h *= zoomFactor;
+          viewBox.x += (transformedPoint.x - viewBox.x) * (1 - zoomFactor);
+          viewBox.y += (transformedPoint.y - viewBox.y) * (1 - zoomFactor);
+
+          treeContainer.setAttribute('viewBox', `${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`);
+      } else {
+          // Pan with non-ctrl wheel events
+          const scrollSpeed = 1.5;
           viewBox.x += e.deltaX * scrollSpeed;
           viewBox.y += e.deltaY * scrollSpeed;
           
