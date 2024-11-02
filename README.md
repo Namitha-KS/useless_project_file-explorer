@@ -4,10 +4,18 @@
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Namitha [9N9ZYICO]
 
 ### Project Description
-[2-3 lines about what your project does]
+This project is an **Electron.js-based file explorer** with an interactive, mind map-style visualization. It enables users to view and navigate their file system through a visual tree structure represented with **SVG elements**. Key features include:
+
+- **Dynamic File Tree Display**: Visualizes folders and files as interconnected nodes for easy navigation.
+- **Theme Customization**: Users can select themes that change the visual appearance of the explorer.
+- **Interactive Pan and Zoom**: Supports panning and pinch-to-zoom for seamless exploration.
+- **User Personalization**: Personalized headers with user names for an engaging user experience.
+- **Responsive Design**: Ensures adaptability across different window sizes and devices.
+
+This tool combines the power of **Electron.js** for cross-platform desktop applications and **SVG** for rich, interactive graphics.
 
 ### The Problem (that doesn't exist)
 [What ridiculous problem are you solving?]
