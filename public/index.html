@@ -4,18 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>File Explorer</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Link to new CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-100 font-sans">
-  <div class="container">
+<body>
+  <!-- Welcome Screen -->
+  <div id="welcome-screen" class="welcome-container">
+    <div class="welcome-form">
+      <div class="name-input-section">
+        <input type="text" id="user-name" placeholder="Enter your name" class="name-input">
+        <button id="name-submit" class="submit-button">Enter</button>
+      </div>
+      
+      <div id="theme-section" class="theme-section hidden">
+        <h2>Select a Theme</h2>
+        <div class="theme-grid">
+          <div class="theme-box" data-theme="nature">
+            <img src="theme1.jpg" alt="Nature Theme">
+          </div>
+          <div class="theme-box" data-theme="ocean">
+            <img src="theme2.jpg" alt="Ocean Theme">
+          </div>
+          <div class="theme-box" data-theme="sunset">
+            <img src="theme3.jpg" alt="Sunset Theme">
+          </div>
+          <div class="theme-box" data-theme="forest">
+            <img src="theme4.jpg" alt="Forest Theme">
+          </div>
+          <div class="theme-box" data-theme="mountain">
+            <img src="theme5.jpg" alt="Mountain Theme">
+          </div>
+        </div>
+        <button id="theme-submit" class="submit-button hidden">Enter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Explorer -->
+  <div id="file-explorer" class="container hidden">
     <header class="header">
-      <h1 class="title">File Explorer</h1>
-      <button id="home-button" class="button">Home</button>
+      <h1 id="header-name" class="title">File Explorer</h1>
+      
     </header>
     <div id="canvas-container" class="canvas-container">
       <svg id="tree-container"></svg>
     </div>
   </div>
+
   <script src="../src/renderer.js"></script>
 </body>
 </html>
