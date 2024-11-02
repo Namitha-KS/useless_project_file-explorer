@@ -36,13 +36,21 @@ For Software:
 `npm start`
 
 ### Project Documentation
-# Screenshots (Add at least 3)
+# Screenshots & Build photos
 
-
-# Build Photos
+![screenshot1](https://github.com/Namitha-KS/useless_project_file-explorer/blob/main/assets/screenshot1.jpg)
+![screenshot2](https://github.com/Namitha-KS/useless_project_file-explorer/blob/main/assets/screenshot2.jpg)
+![screenshot3](https://github.com/Namitha-KS/useless_project_file-explorer/blob/main/assets/screenshot3.jpg)
+![screenshot4](https://github.com/Namitha-KS/useless_project_file-explorer/blob/main/assets/screenshot4.jpg)
+![screenshot5](https://github.com/Namitha-KS/useless_project_file-explorer/blob/main/assets/screenshot5.jpg)
 
 ### Project Demo
 # Video
+
+https://github.com/user-attachments/assets/a972b47b-4992-4104-af27-c176e0a3bd69
+
+
+
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
