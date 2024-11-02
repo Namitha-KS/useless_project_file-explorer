@@ -17,32 +17,27 @@ This project is an **Electron.js-based file explorer** with an interactive, mind
 
 This tool combines the power of **Electron.js** for cross-platform desktop applications and **SVG** for rich, interactive graphics.
 
-### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+### The Problem (that doesn't exist) & The Solution (that nobody asked for)
+File explorer view within desktops is boring, so gave it a wierd fun looking UI
 
-### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- Electron.js
+- HTML/TailwindCSS
 
 ### Implementation
 For Software:
 # Installation
-[commands]
+`npm install electron@latest`
 
 # Run
-[commands]
+`npm start`
 
 ### Project Documentation
-For Software:
-
 # Screenshots (Add at least 3)
+
 
 # Build Photos
 
