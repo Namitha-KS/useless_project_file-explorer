@@ -250,9 +250,7 @@ function initializeHomeButton() {
     buttonText.style.fill = '#FFFFFF';
     buttonText.style.fontSize = '300px';
     buttonText.style.fontWeight = 'bold';
-    buttonText.textContent = '🏠 Home';
 
-    homeButton.appendChild(buttonRect);
     homeButton.appendChild(buttonText);
     
     homeButton.addEventListener('click', () => {
